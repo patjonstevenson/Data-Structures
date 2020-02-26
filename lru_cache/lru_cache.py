@@ -1,3 +1,10 @@
+import sys
+# sys.path.append('../queue_and_stack/dll_stack')
+from doubly_linked_list import ListNode as Node
+from doubly_linked_list import DoublyLinkedList as DLL
+# from dll_stack import Stack
+
+
 class LRUCache:
     """
     Our LRUCache class keeps track of the max number of nodes it
@@ -7,7 +14,10 @@ class LRUCache:
     to every node stored in the cache.
     """
     def __init__(self, limit=10):
-        pass
+        self.max_nodes = limit
+        self.current_number_of_nodes = 0
+        self.ordered_nodes = DLL(None)
+        self.node_dict = {}
 
     """
     Retrieves the value associated with the given key. Also
@@ -17,7 +27,19 @@ class LRUCache:
     key-value pair doesn't exist in the cache.
     """
     def get(self, key):
-        pass
+        try: 
+            node = self.node_dict[key]
+        except KeyError:
+            return None
+        # if Node is None:
+        #     print("\n\nThere is none!!\n\n")
+        #     return None
+        val = node.value[key]
+        self.ordered_nodes.delete(node)
+        self.ordered_nodes.add_to_tail(node)
+        print(f"Key given to get: {key}")
+        print(f"Value given by get: {val}")
+        return val
 
     """
     Adds the given key-value pair to the cache. The newly-
@@ -29,5 +51,24 @@ class LRUCache:
     want to overwrite the old value associated with the key with
     the newly-specified value.
     """
+    # **** NOTE FROM STUDENT: ****
+    # THIS IS A BAD IDEA. WHY ARE WE OVERWRITING THE BUILT-IN SET FUNCTION??
+    # ALTHOUGH I GUESS IT DOESN'T MATTER SINCE WE'LL BE USING DOT NOTATION TO
+    # CALL THIS FUNCTION........ NVM
     def set(self, key, value):
-        pass
+        print(f"MAX NODES: {self.max_nodes}")
+        print(f"Length: {len(self.ordered_nodes)}")
+
+        if self.ordered_nodes.head is not None:
+            print(f"HEAD IN SET BEFORE REMOVAL: {self.ordered_nodes.head.value}")
+        if len(self.ordered_nodes) + 1 > self.max_nodes and key not in self.node_dict:
+            print("REMOVING HEAD")
+            (head_key, head_val) = list(self.ordered_nodes.head.value.items())[0]
+            self.ordered_nodes.remove_from_head()
+            del self.node_dict[head_key]
+        if self.ordered_nodes.head is not None:
+            print(f"HEAD IN SET AFTER REMOVAL: {self.ordered_nodes.head.value}")
+        self.ordered_nodes.add_to_tail({key: value})
+        node = self.ordered_nodes.tail
+        self.node_dict[key] = node
+
