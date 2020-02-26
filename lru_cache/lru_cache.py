@@ -37,8 +37,6 @@ class LRUCache:
         val = node.value[key]
         self.ordered_nodes.delete(node)
         self.ordered_nodes.add_to_tail(node)
-        print(f"Key given to get: {key}")
-        print(f"Value given by get: {val}")
         return val
 
     """
@@ -51,23 +49,11 @@ class LRUCache:
     want to overwrite the old value associated with the key with
     the newly-specified value.
     """
-    # **** NOTE FROM STUDENT: ****
-    # THIS IS A BAD IDEA. WHY ARE WE OVERWRITING THE BUILT-IN SET FUNCTION??
-    # ALTHOUGH I GUESS IT DOESN'T MATTER SINCE WE'LL BE USING DOT NOTATION TO
-    # CALL THIS FUNCTION........ NVM
     def set(self, key, value):
-        print(f"MAX NODES: {self.max_nodes}")
-        print(f"Length: {len(self.ordered_nodes)}")
-
-        if self.ordered_nodes.head is not None:
-            print(f"HEAD IN SET BEFORE REMOVAL: {self.ordered_nodes.head.value}")
         if len(self.ordered_nodes) + 1 > self.max_nodes and key not in self.node_dict:
-            print("REMOVING HEAD")
             (head_key, head_val) = list(self.ordered_nodes.head.value.items())[0]
             self.ordered_nodes.remove_from_head()
             del self.node_dict[head_key]
-        if self.ordered_nodes.head is not None:
-            print(f"HEAD IN SET AFTER REMOVAL: {self.ordered_nodes.head.value}")
         self.ordered_nodes.add_to_tail({key: value})
         node = self.ordered_nodes.tail
         self.node_dict[key] = node

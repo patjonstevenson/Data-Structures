@@ -7,7 +7,6 @@ class CacheTests(unittest.TestCase):
         self.cache = LRUCache(3)
 
     def test_cache_overwrite_appropriately(self):
-        print("\n\nRunning cache overwrite appropriately...")
         self.cache.set('item1', 'a')
         self.cache.set('item2', 'b')
         self.cache.set('item3', 'c')
@@ -18,19 +17,16 @@ class CacheTests(unittest.TestCase):
         self.assertEqual(self.cache.get('item2'), 'z')
 
     def test_cache_insertion_and_retrieval(self):
-        print("\n\nRunning insertion and retrieval...")
         self.cache.set('item1', 'a')
         self.cache.set('item2', 'b')
         self.cache.set('item3', 'c')
 
         self.assertEqual(self.cache.get('item1'), 'a')
-        print("ADDING FOURTH ELEMENT; SHOULD DELETE HEAD")
         self.cache.set('item4', 'd')
 
         self.assertEqual(self.cache.get('item1'), 'a')
         self.assertEqual(self.cache.get('item3'), 'c')
         self.assertEqual(self.cache.get('item4'), 'd')
-        print("CHECKING ASSERT IS NONE")
         self.assertIsNone(self.cache.get('item2'))
 
     def test_cache_nonexistent_retrieval(self):
