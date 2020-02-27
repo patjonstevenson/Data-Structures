@@ -36,7 +36,7 @@ class BinarySearchTree:
         if self.value == target:
             return True
         # If tree value is less than our value, look right
-        if target > self.value:
+        elif target > self.value:
             # If no value to the right,
             #  return False b/c tree doesn't contain our value
             if not self.right:
@@ -54,17 +54,23 @@ class BinarySearchTree:
 
     # Return the maximum value found in the tree
     def get_max(self):
+        # If no nodes to the right, there are no values
+        #  greater than the current value, so return
         if not self.right:
             return self.value
+        # Otherwise, move right and recurse
         else:
             return self.right.get_max()
 
     # Call the function `cb` on the value of each node
     # You may use a recursive or iterative approach
     def for_each(self, cb):
+        # Run cb on current level
         cb(self.value)
+        # Recurse left
         if self.left:
             self.left.for_each(cb)
+        # Recurse right`
         if self.right:
             self.right.for_each(cb)
 
@@ -73,11 +79,22 @@ class BinarySearchTree:
     # Print all the values in order from low to high
     # Hint:  Use a recursive, depth first traversal
     def in_order_print(self, node):
-        pass
+        if node.left:
+            self.in_order_print(node.left)
+        print(node.value)
+        if node.right:
+            self.in_order_print(node.right)
 
     # Print the value of every node, starting with the given node,
     # in an iterative breadth first traversal
     def bft_print(self, node):
+        # queue = Queue()
+        # queue.enqueue(node.left)
+        # queue.enqueue(node.right)
+        # while queue.len():
+        #     item = queue.dequeue()
+        #     print(item)
+        # bft_print()
         pass
 
     # Print the value of every node, starting with the given node,
