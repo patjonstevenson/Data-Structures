@@ -14,31 +14,42 @@ class BinarySearchTree:
     def insert(self, value):
         # Value greater than tree value => go right
         if value >= self.value:
+            # If no value to the right, create one
             if not self.right:
                 self.right = BinarySearchTree(value)
+            # Otherwise, move to that level recursively
             else:
                 self.right.insert(value)
         # Value less than tree value => go left
         elif value < self.value:
+            # If no value to the left, create one
             if not self.left:
                 self.left = BinarySearchTree(value)
+            # Otherwise, move to that level recursively
             else:
                 self.left.insert(value)
 
     # Return True if the tree contains the value
     # False if it does not
     def contains(self, target):
-        if not self.value:
-            return False
+        # If tree value is our value, we found it, so return True
         if self.value == target:
             return True
-        if target >= self.value:
+        # If tree value is less than our value, look right
+        if target > self.value:
+            # If no value to the right,
+            #  return False b/c tree doesn't contain our value
             if not self.right:
                 return False
+            # Otherwise, move to the next level recursively
             return self.right.contains(target)
+        # If tree value is greater than our value, look left
         elif target < self.value:
+            # If no value to the left,
+            #  return False b/c tree doesn't contain our value
             if not self.left:
                 return False
+            # Otherwise, move to the next level recursively
             return self.left.contains(target)
 
     # Return the maximum value found in the tree
