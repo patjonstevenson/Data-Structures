@@ -1,3 +1,10 @@
+import sys
+# sys.path.append('../queue_and_stack/dll_stack')
+from doubly_linked_list import ListNode as Node
+from doubly_linked_list import DoublyLinkedList as DLL
+# from dll_stack import Stack
+
+
 class LRUCache:
     """
     Our LRUCache class keeps track of the max number of nodes it
@@ -7,7 +14,10 @@ class LRUCache:
     to every node stored in the cache.
     """
     def __init__(self, limit=10):
-        pass
+        self.limit = limit
+        self.size = 0
+        self.ordered_nodes = DLL(None)
+        self.node_dict = {}
 
     """
     Retrieves the value associated with the given key. Also
@@ -17,7 +27,27 @@ class LRUCache:
     key-value pair doesn't exist in the cache.
     """
     def get(self, key):
-        pass
+        # if key in self.node_dict:
+        #     node = self.node_dict[key]
+        #     self.ordered_nodes.move_to_end(node)
+        #     return node.value[1]
+        # else:
+        #     return None
+
+
+
+
+        try: 
+            node = self.node_dict[key]
+        except KeyError:
+            return None
+        # if Node is None:
+        #     print("\n\nThere is none!!\n\n")
+        #     return None
+        val = node.value[key]
+        self.ordered_nodes.delete(node)
+        self.ordered_nodes.add_to_tail(node)
+        return val
 
     """
     Adds the given key-value pair to the cache. The newly-
@@ -30,4 +60,39 @@ class LRUCache:
     the newly-specified value.
     """
     def set(self, key, value):
-        pass
+        # if key in self.node_dict:
+        #     # Get node from key
+        #     node = self.node_dict[key]
+        #     # Overwrite value
+        #     node.value = (key, value)
+        #     # Move to end
+        #     self.ordered_nodes.move_to_end(node)
+        #     return
+
+        # # Cache is full
+        # if self.size == self.limit:
+        #     # Remove oldest entry from dictionary
+        #     del self.node_dict[self.ordered_nodes.head.value[0]]
+        #     # Remove from linked list
+        #     self.ordered_nodes.remove_from_head()
+        #     # Reduce the size
+        #     self.size -= 1
+
+        # # Add to DLL (key and value)
+        # self.ordered_nodes.add_to_tail((key, value))
+        # # Add the key and value to the dictionary
+        # self.node_dict[key] =  self.ordered_nodes.tail
+        # # Increment size
+        # self.size += 1
+
+
+        if self.size + 1 > self.limit and key not in self.node_dict:
+            (head_key, head_val) = list(self.ordered_nodes.head.value.items())[0]
+            self.ordered_nodes.remove_from_head()
+            del self.node_dict[head_key]
+            self.size -= 1
+        self.ordered_nodes.add_to_tail({key: value})
+        node = self.ordered_nodes.tail
+        self.node_dict[key] = node
+        self.size += 1
+
